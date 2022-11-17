@@ -1,0 +1,44 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity
+            name="Spisywarka\Domain\Model\Item"
+            repository-class="Spisywarka\Infrastructure\Doctrine\Repository\DoctrineItemRepository">
+        <id name="id" type="item_id"/>
+        <field name="name" type="string" length="250" nullable="false"/>
+        <field name="slug" type="string" length="250" nullable="false"/>
+        <field name="author" type="string" length="250" nullable="true"/>
+        <field name="originalTitle" type="string" length="250" nullable="true"/>
+        <field name="description" type="text" length="65535" nullable="true"/>
+        <field name="content" type="text" length="65535" nullable="true"/>
+        <field name="partsCount" type="integer"  nullable="true"/>
+        <field name="mediumType" type="string" length="250" nullable="true"/>
+        <field name="firstReleaseDate" type="datetime_immutable" nullable="true"/>
+        <field name="releaseDate" type="datetime_immutable" nullable="true"/>
+        <field name="addons" type="text" length="65535" nullable="true"/>
+        <field name="position" type="integer" nullable="true"/>
+        <field name="translatedBy" type="string" length="250" nullable="true"/>
+        <field name="masteredBy" type="string" length="250" nullable="true"/>
+        <field name="coverType" type="string" length="250" nullable="true"/>
+        <field name="editionNumber" type="integer" nullable="true"/>
+        <field name="infoUrl" type="string" length="250" nullable="true"/>
+        <field name="imageUrl" type="string" length="250" nullable="true"/>
+        <field name="tags" type="string" length="250" nullable="true"/>
+        <field name="createdAt" type="datetime_immutable" nullable="false"/>
+        <field name="updatedAt" type="datetime_immutable" nullable="true"/>
+        <many-to-one
+                field="category"
+                target-entity="Spisywarka\Domain\Model\Category"
+                inversed-by="items">
+            <join-column nullable="true"/>
+        </many-to-one>
+        <one-to-one field="parent" target-entity="Spisywarka\Domain\Model\Item">
+            <join-column nullable="true"/>
+        </one-to-one>
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="onPrePersist"/>
+            <lifecycle-callback type="preUpdate" method="onPreUpdate"/>
+        </lifecycle-callbacks>
+    </entity>
+</doctrine-mapping>

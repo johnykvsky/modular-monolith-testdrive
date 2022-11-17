@@ -1,0 +1,167 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    some.param: 'testing'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: false      # Automatically injects dependencies in your services.
+        autoconfigure: false # Automatically registers your services as commands, event subscribers, etc.
+        #public: false
+
+    _instanceof:
+        Spisywarka\Application\Interface\CommandHandlerInterface:
+            tags:
+              - { name: messenger.message_handler,  bus: command.bus }
+        Spisywarka\Application\Interface\EventHandlerInterface:
+            tags:
+              - { name: messenger.message_handler, bus: event.bus  }
+
+    doctrine.item.repository:
+        class: 'Spisywarka\Infrastructure\Doctrine\Repository\DoctrineItemRepository'
+        arguments:
+            - '@Doctrine\Persistence\ManagerRegistry'
+
+    doctrine.category.repository:
+        class: 'Spisywarka\Infrastructure\Doctrine\Repository\DoctrineCategoryRepository'
+        arguments:
+            - '@Doctrine\Persistence\ManagerRegistry'
+
+    create.item.handler:
+        class: 'Spisywarka\Application\CommandHandler\CreateItemCommandHandler'
+        arguments:
+            - '@doctrine.item.repository'
+            - '@doctrine.category.repository'
+            - '@slugger'
+            - '@logger'
+            - '@event.bus'
+
+    update.item.handler:
+        class: 'Spisywarka\Application\CommandHandler\UpdateItemCommandHandler'
+        arguments:
+            - '@doctrine.item.repository'
+            - '@doctrine.category.repository'
+            - '@slugger'
+            - '@logger'
+            - '@event.bus'
+
+    delete.item.handler:
+        class: 'Spisywarka\Application\CommandHandler\DeleteItemCommandHandler'
+        arguments:
+            - '@doctrine.item.repository'
+            - '@logger'
+            - '@event.bus'
+
+    item.created.handler:
+        class: 'Spisywarka\Application\EventHandler\ItemCreatedEventHandler'
+
+    item.updated.handler:
+        class: 'Spisywarka\Application\EventHandler\ItemUpdatedEventHandler'
+
+    item.deleted.handler:
+        class: 'Spisywarka\Application\EventHandler\ItemDeletedEventHandler'
+
+    create.category.handler:
+        class: 'Spisywarka\Application\CommandHandler\CreateCategoryCommandHandler'
+        arguments:
+            - '@doctrine.category.repository'
+            - '@slugger'
+            - '@logger'
+            - '@event.bus'
+
+    update.category.handler:
+        class: 'Spisywarka\Application\CommandHandler\UpdateCategoryCommandHandler'
+        arguments:
+            - '@doctrine.category.repository'
+            - '@slugger'
+            - '@logger'
+            - '@event.bus'
+
+    delete.category.handler:
+        class: 'Spisywarka\Application\CommandHandler\DeleteCategoryCommandHandler'
+        arguments:
+            - '@doctrine.category.repository'
+            - '@logger'
+            - '@event.bus'
+
+    category.created.handler:
+        class: 'Spisywarka\Application\EventHandler\CategoryCreatedEventHandler'
+
+    category.updated.handler:
+        class: 'Spisywarka\Application\EventHandler\CategoryUpdatedEventHandler'
+
+    category.deleted.handler:
+        class: 'Spisywarka\Application\EventHandler\CategoryDeletedEventHandler'
+
+    doctrine.items.repository:
+        class: 'Spisywarka\Infrastructure\Doctrine\Repository\DoctrineGetItemsRepository'
+        arguments:
+            - '@Doctrine\Persistence\ManagerRegistry'
+
+    doctrine.categories.repository:
+        class: 'Spisywarka\Infrastructure\Doctrine\Repository\DoctrineGetCategoriesRepository'
+        arguments:
+            - '@Doctrine\Persistence\ManagerRegistry'
+
+    app.uuid:
+        class: "Ramsey\Uuid\Uuid"
+
+    home.controller:
+        class: 'Spisywarka\Infrastructure\Symfony\Controller\HomeController'
+        tags: ['controller.service_arguments']
+        public: true
+        arguments:
+            - '@doctrine.items.repository'
+            - '@doctrine.categories.repository'
+            - '@slugger'
+        calls:
+            - method: 'setContainer'
+              arguments: ['@service_container']
+
+    item.controller:
+        class: 'Spisywarka\Infrastructure\Symfony\Controller\ItemController'
+        tags: ['controller.service_arguments']
+        public: true
+        arguments:
+            - '@doctrine.item.repository'
+            - '@command.bus'
+        calls:
+            - method: 'setContainer'
+              arguments: ['@service_container']
+
+    category.controller:
+        class: 'Spisywarka\Infrastructure\Symfony\Controller\CategoryController'
+        tags: ['controller.service_arguments']
+        public: true
+        arguments:
+            - '@doctrine.category.repository'
+            - '@command.bus'
+        calls:
+            - method: 'setContainer'
+              arguments: ['@service_container']
+
+    items.controller:
+        class: 'Spisywarka\Infrastructure\Symfony\Controller\ItemsController'
+        tags: ['controller.service_arguments']
+        public: true
+        arguments:
+            - '@doctrine.items.repository'
+            - '@knp_paginator'
+        calls:
+            - method: 'setContainer'
+              arguments: ['@service_container']
+
+    mail.controller:
+        class: 'Spisywarka\Infrastructure\Symfony\Controller\MailController'
+        tags: ['controller.service_arguments']
+        public: true
+        calls:
+            - method: 'setContainer'
+              arguments: ['@service_container']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones

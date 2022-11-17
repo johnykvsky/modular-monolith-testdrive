@@ -1,0 +1,54 @@
+home:
+  path:     /home
+  controller: 'home.controller::index'
+  methods: GET
+
+create_item:
+  path:     /item
+  controller: 'item.controller::create'
+  methods: POST
+
+update_item:
+  path:     /item/{id}
+  controller: 'item.controller::update'
+  methods: PATCH
+
+delete_item:
+  path:     /item/{id}
+  controller: 'item.controller::delete'
+  methods: DELETE
+
+create_category:
+  path:     /category
+  controller: 'category.controller::create'
+  methods: POST
+
+update_category:
+  path:     /category/{id}
+  controller: 'category.controller::update'
+  methods: PATCH
+
+delete_category:
+  path:     /category/{id}
+  controller: 'category.controller::delete'
+  methods: DELETE
+
+mail:
+  path:     /mail
+  controller: 'mail.controller::index'
+  methods: GET
+
+get_items_by_tag:
+  path:     /items/tag
+  controller: 'items.controller::tag'
+  methods: GET
+
+get_items_in_category:
+  path:     /items/category/{id}
+  controller: 'items.controller::category'
+  methods: GET
+
+get_items:
+  path:     /items
+  controller: 'items.controller::index'
+  methods: GET

@@ -1,0 +1,7 @@
+controllers:
+    resource: ../../Controller/
+    type: annotation
+
+kernel:
+    resource: ../../SpisywarkaKernel.php
+    type: annotation

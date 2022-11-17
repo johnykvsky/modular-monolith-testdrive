@@ -1,0 +1,11 @@
+doctrine_migrations:
+    migrations_paths:
+        'Spisywarka\Infrastructure\Doctrine\Migrations': '%kernel.project_dir%/src/Spisywarka/Infrastructure/Doctrine/Migrations'
+    storage:
+        table_storage:
+            table_name: 'spisywarka_migration'
+            version_column_name: 'version'
+            version_column_length: 1024
+            executed_at_column_name: 'executed_at'
+            execution_time_column_name: 'execution_time'
+    enable_profiler: '%kernel.debug%'

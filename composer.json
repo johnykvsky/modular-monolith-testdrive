@@ -1,0 +1,111 @@
+{
+    "authors": [
+        {
+            "name": "Johny Kvsky",
+            "email": "johnykvsky@protonmail.com"
+        }
+    ],
+    "type": "project",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require-dev": {
+        "phpstan/phpstan": "^1.2",
+        "phpstan/phpstan-beberlei-assert": "^1.0",
+        "phpstan/phpstan-doctrine": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "phpstan/phpstan-symfony": "^1.0",
+        "phpunit/phpunit": "^9.0",
+        "symfony/stopwatch": "^5.4",
+        "symfony/var-dumper": "^5.4",
+        "symfony/web-profiler-bundle": "^5.4"
+    },
+    "require": {
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "ext-pdo": "*",
+        "beberlei/assert": "^3.3.1",
+        "doctrine/doctrine-bundle": "^2.5.2",
+        "doctrine/doctrine-migrations-bundle": "^3.2.1",
+        "doctrine/orm": "^2.10.3",
+        "firebase/php-jwt": "^5.5.1",
+        "friendsofsymfony/rest-bundle": "~3.3.0",
+        "jms/serializer-bundle": "~4.0.1",
+        "knplabs/knp-paginator-bundle": "^5.8",
+        "nelmio/cors-bundle": "^2.2",
+        "php-http/guzzle6-adapter": "^2.0.2",
+        "php-http/message": "^1.12",
+        "ramsey/uuid": "^4.2.3",
+        "ramsey/uuid-doctrine": "~1.8",
+        "sensio/framework-extra-bundle": "^6.2",
+        "stof/doctrine-extensions-bundle": "^1.7",
+        "symfony/apache-pack": "^1.0",
+        "symfony/console": "^5.4",
+        "symfony/dotenv": "^5.4",
+        "symfony/flex": "^2.0",
+        "symfony/form": "^5.4",
+        "symfony/framework-bundle": "^5.4",
+        "symfony/http-kernel": "^5.4",
+        "symfony/mailer": "^5.4",
+        "symfony/messenger": "^5.4",
+        "symfony/monolog-bundle": "^3.7",
+        "symfony/proxy-manager-bridge": "*",
+        "symfony/runtime": "^5.4",
+        "symfony/security-csrf": "^5.4",
+        "symfony/string": "5.3.*",
+        "symfony/translation": "^5.4",
+        "symfony/twig-bundle": "^5.4",
+        "symfony/validator": "^5.4",
+        "symfony/yaml": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": ["test/Unit", "test/Integration", "test/Functional"]
+        }
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true,
+            "symfony/runtime": true
+        }
+    },
+    "replace": {
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*"
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "5.3.*"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "check-style": "phpcs -p --standard=phpcs.xml --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1",
+        "fix-style": "phpcbf -p --standard=phpcs.xml --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1",
+        "phpstan": "vendor/bin/phpstan analyse src --level=0",
+        "phpstan-max": "vendor/bin/phpstan analyse src --level=7",
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    }
+}
